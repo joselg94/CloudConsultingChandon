@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
-    <fullName>Resource_Project_Rol__c</fullName>
+    <fullName>Project_Rol__c</fullName>
     <externalId>false</externalId>
-    <label>Resource Project Rol</label>
-    <referenceTo>Resource_Project_Rol__c</referenceTo>
-    <relationshipLabel>Project Rols</relationshipLabel>
-    <relationshipName>Project_Rols</relationshipName>
+    <label>Project Rol</label>
+    <referenceTo>Project_Rol__c</referenceTo>
+    <relationshipLabel>Resource Project Rols</relationshipLabel>
+    <relationshipName>Resource_Project_Rols</relationshipName>
     <relationshipOrder>0</relationshipOrder>
     <reparentableMasterDetail>false</reparentableMasterDetail>
     <trackTrending>false</trackTrending>
