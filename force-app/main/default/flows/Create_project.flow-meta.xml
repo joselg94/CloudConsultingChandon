@@ -20,8 +20,8 @@
     <assignments>
         <name>Assign_Single_Project_Rol</name>
         <label>Assign Single Project Rol</label>
-        <locationX>886</locationX>
-        <locationY>433</locationY>
+        <locationX>890</locationX>
+        <locationY>404</locationY>
         <assignmentItems>
             <assignToReference>SingleProjectRol.Role__c</assignToReference>
             <operator>Assign</operator>
@@ -52,8 +52,8 @@
     <loops>
         <name>Loop_On_Project_Rols</name>
         <label>Loop On Project Rols</label>
-        <locationX>651</locationX>
-        <locationY>401</locationY>
+        <locationX>653</locationX>
+        <locationY>404</locationY>
         <collectionReference>Get_Opp_Line_Item</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -85,8 +85,8 @@
     <recordCreates>
         <name>Create_Project</name>
         <label>Create Project</label>
-        <locationX>176</locationX>
-        <locationY>402</locationY>
+        <locationX>178</locationX>
+        <locationY>403</locationY>
         <connector>
             <targetReference>Get_Opp_Line_Item</targetReference>
         </connector>
@@ -97,9 +97,21 @@
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>Name</field>
+            <value>
+                <stringValue>Project {!$Record.Account.Name}</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Opportunity__c</field>
             <value>
                 <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>OwnerId</field>
+            <value>
+                <elementReference>$Record.Project_Manager__r.Id</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>
