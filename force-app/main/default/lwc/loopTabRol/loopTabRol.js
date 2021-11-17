@@ -5,7 +5,8 @@ import getRolByProyecRol from "@salesforce/apex/GetResourceController.getRolByPr
 import insertResourceList from "@salesforce/apex/GetResourceController.insertResourceList";
 import { ShowToastEvent } from "lightning/platformShowToastEvent";
 import { refreshApex } from "@salesforce/apex";
-
+import { publish, MessageContext } from "lightning/messageService";
+import ResourceMC from "@salesforce/messageChannel/ResourceMessageChannel__c";
 const columns = [
   { label: "Name", fieldName: "Name", type: "text" },
   {
@@ -22,15 +23,12 @@ const columns = [
   }
 ];
 const SUCCESS_TITLE = "Success";
-const MESSAGE_SHIP_IT = "Ship it!";
 const SUCCESS_VARIANT = "success";
 const ERROR_TITLE = "Error";
 const ERROR_VARIANT = "error";
 
 export default class LoopTabRol extends LightningElement {
   @api recordId;
-
-  // roles = ["Consultor", "Developer", "Architect"];
   roles;
   rol;
   error;
@@ -42,6 +40,8 @@ export default class LoopTabRol extends LightningElement {
   assigned = 0;
   hoursAssigned;
   wiredResult;
+
+  @wire(MessageContext) messageContext;
 
   @wire(getRolByProyecRol, { recordId: "$recordId" })
   res(r) {
@@ -82,6 +82,8 @@ export default class LoopTabRol extends LightningElement {
           title: SUCCESS_TITLE
         });
         this.dispatchEvent(toastEvent);
+
+        publish(this.messageContext, ResourceMC, { recordId: this.recordId });
 
         this.draftValues = [];
         refreshApex(this.wiredResult);
