@@ -1,0 +1,23 @@
+<template>
+  <lightning-card title="">
+    <lightning-tabset>
+      <template for:each={roles} for:item="item">
+        <lightning-tab label={item} key={item} onactive={handleActive}>
+          <lightning-card title={title}>
+            <lightning-datatable
+              key-field="Id"
+              data={response}
+              columns={columns}
+              onsave={handleSave}
+              onclick={handleClick}
+              class="datatable"
+              draft-values={draftValues}
+              hide-checkbox-column
+            >
+            </lightning-datatable>
+          </lightning-card>
+        </lightning-tab>
+      </template>
+    </lightning-tabset>
+  </lightning-card>
+</template>
