@@ -1,5 +1,13 @@
 import { LightningElement, api, wire } from "lwc";
 import resourceProjectList from "@salesforce/apex/GetResourceController.resourceProjectList";
+import {
+  subscribe,
+  MessageContext,
+  APPLICATION_SCOPE
+} from "lightning/messageService";
+import ResourceMC from "@salesforce/messageChannel/ResourceMessageChannel__c";
+import { refreshApex } from "@salesforce/apex";
+
 export default class ResourceList extends LightningElement {
   @api recordId;
   columns = [
@@ -18,9 +26,28 @@ export default class ResourceList extends LightningElement {
   ];
   response;
   title = "test";
+  subscription;
+  test;
+  @wire(MessageContext) messageContext;
 
+  subscribeMC() {
+    if (this.subscription) {
+      return;
+    }
+    this.subscription = subscribe(
+      this.messageContext,
+      ResourceMC,
+      (message) => refreshApex(this.test),
+      { scope: APPLICATION_SCOPE }
+    );
+  }
+
+  connectedCallback() {
+    this.subscribeMC();
+  }
   @wire(resourceProjectList, { recordId: "$recordId" })
   resource(res) {
+    this.test = res;
     if (res.data) {
       let list = [];
       for (let i = 0; i < res.data.length; i++) {

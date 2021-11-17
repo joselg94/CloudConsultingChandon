@@ -1,5 +1,4 @@
 public with sharing class GetResourceController {
-    
   @AuraEnabled(cacheable = true)
   public static List<User> getResourceByRol(String rol, Id recordId ) {
 
@@ -23,36 +22,34 @@ public with sharing class GetResourceController {
     return [SELECT Id, Name, UserRoleId
             FROM User 
             WHERE UserRole.Name =: rol AND Id NOT IN:busyUsers];
-
   } 
 
   @AuraEnabled(cacheable = true)
   public static List<String> getRolByProyecRol(Id recordId ) {
 
     List<AggregateResult> roles = [SELECT Role__c role
-                                    FROM Project_Rol__c
-                                    WHERE Project__c =: recordId GROUP BY Role__c];
+                                   FROM Project_Rol__c
+                                   WHERE Project__c =: recordId 
+                                   GROUP BY Role__c];
 
     Set<String> currentRoles = new Set<String>();
+
     for (AggregateResult r : roles) {
       currentRoles.add((String)r.get('role'));
     }
 
     List<String> roleList = new List<String>();
+
     for (String r : currentRoles) {
       roleList.add(r);
     }
-    
     return roleList;
   } 
 
   @AuraEnabled
   public static List<Resource_Project_Rol__c> insertResourceList(Object data, Id recordId){
 
-    List<Resource_Project_Rol__c> resourceForInsert = (List<Resource_Project_Rol__c>) JSON.deserialize(
-        JSON.serialize(data),
-        List<Resource_Project_Rol__c>.class
-    );
+    List<Resource_Project_Rol__c> resourceForInsert = (List<Resource_Project_Rol__c>) JSON.deserialize(JSON.serialize(data),List<Resource_Project_Rol__c>.class);
     List<Resource_Project_Rol__c> newResources = new List<Resource_Project_Rol__c>();
 
     for (Resource_Project_Rol__c ri : resourceForInsert) {
@@ -75,15 +72,16 @@ public with sharing class GetResourceController {
   public static List<Project_Rol__c> getHoursByRole(String role, Id recordId ) {
   
     List<Project_Rol__c> roles =[SELECT Role__c,Quantity__c,SumRoleHours__c
-                                  FROM Project_Rol__c
-                                  WHERE Project__c =: recordId AND Role__c =: role];
+                                 FROM Project_Rol__c
+                                 WHERE Project__c =: recordId 
+                                 AND Role__c =: role];
     return roles;
   }
 
   @AuraEnabled(cacheable = true) 
   public static List<Resource_Project_Rol__c> resourceProjectList(Id recordId) {
     return [SELECT User__r.Name, User__r.UserRole.Name, StartDate__c,StopDate__c 
-                                          FROM Resource_Project_Rol__c 
-                                          WHERE Project_Rol__r.Project__c =:recordId ];
+            FROM Resource_Project_Rol__c 
+            WHERE Project_Rol__r.Project__c =:recordId ];
   }
 }
